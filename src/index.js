@@ -34,21 +34,19 @@ function mergeDeep(...sources) {
 
 function updateEntities(entityData) {
 
-    for (entity in entityData) {
+    for (let entity of entityData) {
         if (entity['id'] === null) {
             entities[newEntityId++]['update'] = entity['update'];
         }
         else {
             mergeDeepObject(entities[entity['id']]['update'], entity['update']);
-            for (removeComponent in entity['remove']) {
+            for (removeComponent of entity['remove']) {
                 delete entities[entity['id']]['update'][removeComponent];
             }
         }
     }
 
-    io.emit('updateEntities', {
-        'entities': entityData
-    });
+    io.emit('updateEntities', entityData);
 
     console.log(`UpdateEntities with:`);
     console.log(entityData);
@@ -56,7 +54,7 @@ function updateEntities(entityData) {
 
 function destroyEntities(entityData) {
 
-    for (entity in entityData) {
+    for (let entity in entityData) {
         if (entity['id'] !== null) {
             delete entities[entity['id']];
         }
