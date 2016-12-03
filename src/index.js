@@ -72,7 +72,6 @@ function createPlayerEntity(socket) {
 
     console.log(`Assigned ${playerId} to new player`);
 
-    socket.emit('joined', playerId);
 
     let entityList = [];
 
@@ -80,8 +79,9 @@ function createPlayerEntity(socket) {
         entityList.push({'id': entityId, 'update': entities[entityId]['update']});
     }
 
-    socket.emit('updateEntities', entityList);
-    io.emit('updateEntities', [{'id': playerId, 'update': entities[playerId]['update']}]);
+    socket.emit('joined', {'id': playerId, 'entityList': entityList});
+    // socket.emit('updateEntities', entityList);
+    // io.emit('updateEntities', [{'id': playerId, 'update': entities[playerId]['update']}]);
 }
 
 io.on('connection', function(socket) {
