@@ -46,7 +46,7 @@ function updateEntities(entityData) {
             entity['id'] = id;
         }
         else {
-            if ('update' in entities[entity['id']]) {
+            if ('update' in entity) {
                 mergeDeepObject(entities[entity['id']]['update'], entity['update']);
             }
             if ('remove' in entity) {
