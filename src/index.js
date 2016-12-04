@@ -36,10 +36,14 @@ function updateEntities(entityData) {
 
     for (let entity of entityData) {
         if (entity['id'] === null) {
-            entities[newEntityId++]['update'] = entity['update'];
+            let id = newEntityId++;
+            entities[id]['update'] = entity['update'];
+            entity['id'] = id;
         }
         else {
-            mergeDeepObject(entities[entity['id']]['update'], entity['update']);
+            if ('update' in entities[entity['id']]) {
+                mergeDeepObject(entities[entity['id']]['update'], entity['update']);
+            }
             for (removeComponent of entity['remove']) {
                 delete entities[entity['id']]['update'][removeComponent];
             }
@@ -54,8 +58,11 @@ function updateEntities(entityData) {
 
 function destroyEntities(entityData) {
 
-    for (let entity in entityData) {
+    console.log(`Destroying entities`)
+    for (let entity of entityData) {
         if (entity['id'] !== null) {
+            console.log(`destroying`)
+            console.log(entity)
             delete entities[entity['id']];
         }
     }
@@ -70,13 +77,16 @@ function createPlayerEntity(socket) {
 
     console.log(`Assigned ${playerId} to new player`);
 
-
     let entityList = [];
 
     for (let entityId in entities) {
+        console.log('BUilding entity array')
         entityList.push({'id': entityId, 'update': entities[entityId]['update']});
     }
 
+    console.log('Emitting joined')
+    console.log(`EntityList:`)
+    console.log(entityList)
     socket.emit('joined', {'id': playerId, 'entityList': entityList});
     // socket.emit('updateEntities', entityList);
     // io.emit('updateEntities', [{'id': playerId, 'update': entities[playerId]['update']}]);
