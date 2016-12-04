@@ -4,6 +4,10 @@ let entities = {};
 let socketIdToEntityId = {};
 let newEntityId = 1;
 
+function isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item) && item !== null)
+}
+
 function mergeDeepObject(target, source) {
     let output = Object.assign({}, target)
     if (isObject(target) && isObject(source)) {
@@ -33,7 +37,8 @@ function mergeDeep(...sources) {
 }
 
 function updateEntities(entityData) {
-
+    console.log('Updating entities')
+    console.log(entityData)
     for (let entity of entityData) {
         if (entity['id'] === null) {
             let id = newEntityId++;
