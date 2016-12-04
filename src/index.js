@@ -95,7 +95,10 @@ function createPlayerEntity(socket) {
 io.on('connection', function(socket) {
 
     console.log(`Client ${socket.id} connected.`);
-    createPlayerEntity(socket);
+    socket.on('join', function(data) {
+        console.log('Player joined');
+        createPlayerEntity(socket);
+    });
 
     socket.on('updateEntities', updateEntities);
 
