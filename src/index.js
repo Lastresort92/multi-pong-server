@@ -42,6 +42,7 @@ function updateEntities(entityData) {
     for (let entity of entityData) {
         if (entity['id'] === null) {
             let id = newEntityId++;
+            entities[id] = {}
             entities[id]['update'] = entity['update'];
             entity['id'] = id;
         }
